@@ -72,6 +72,6 @@ configure({
 setLocale('zh_TW')
 
 // 註冊 vee-validate 三個全域元件
-app.use(router).component('Form', Form)
-app.use(router).component('Field', Field)
+app.use(router).component('VForm', Form)
+app.use(router).component('VField', Field)
 app.use(router).component('ErrorMessage', ErrorMessage)

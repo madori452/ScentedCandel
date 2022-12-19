@@ -114,39 +114,39 @@
           <div class="form-table-info col-xl-5 px-0"  v-if="cart.carts.length>=1">
             <div class="bg-white">
               <div class="row">
-                <Form class="col-md-12 d-flex justify-content-center flex-column form-order" @submit="createOrder"  v-slot="{ errors }">
+                <VForm class="col-md-12 d-flex justify-content-center flex-column form-order" @submit="createOrder"  v-slot="{ errors }">
                   <p class="h5 en-font mt-5">訂購人資料</p>
                   <hr />
                   <div class="mb-3 mt-3">
                     <label for="email" class="form-label">Email</label>
-                    <Field id="email" name="email" type="email" class="form-control"
+                    <VField id="email" name="email" type="email" class="form-control"
                               :class="{ 'is-invalid': errors['email'] }"
                               placeholder="請輸入 Email" rules="email|required"
-                              v-model="form.user.email"></Field>
+                              v-model="form.user.email"></VField>
                     <ErrorMessage name="email" class="invalid-feedback"></ErrorMessage>
                   </div>
                   <div class="mb-3">
                     <label for="name" class="form-label">姓名</label>
-                    <Field id="name" name="姓名" type="text" class="form-control"
+                    <VField id="name" name="姓名" type="text" class="form-control"
                               :class="{ 'is-invalid': errors['姓名'] }"
                               placeholder="請輸入姓名" rules="required"
-                              v-model="form.user.name"></Field>
+                              v-model="form.user.name"></VField>
                     <ErrorMessage name="姓名" class="invalid-feedback"></ErrorMessage>
                   </div>
                   <div class="mb-3">
                     <label for="tel" class="form-label">電話</label>
-                    <Field id="tel" name="電話" type="tel" class="form-control"
+                    <VField id="tel" name="電話" type="tel" class="form-control"
                               :class="{ 'is-invalid': errors['電話'] }"
                               placeholder="請輸入電話" rules="required"
-                              v-model="form.user.tel"></Field>
+                              v-model="form.user.tel"></VField>
                     <ErrorMessage name="電話" class="invalid-feedback"></ErrorMessage>
                   </div>
                   <div class="mb-3">
                     <label for="address" class="form-label">地址</label>
-                    <Field id="address" name="地址" type="text" class="form-control"
+                    <VField id="address" name="地址" type="text" class="form-control"
                               :class="{ 'is-invalid': errors['地址'] }"
                               placeholder="請輸入地址" rules="required"
-                              v-model="form.user.address"></Field>
+                              v-model="form.user.address"></VField>
                     <ErrorMessage name="地址" class="invalid-feedback"></ErrorMessage>
                   </div>
                   <div class="mb-3">
@@ -157,7 +157,7 @@
                   <div class="text-end">
                     <input type="submit" class="btn btn-primary w-100 mb-5 py-2 text-white rounded-0" value="送出訂單">
                   </div>
-                </Form>
+                </VForm>
               </div>
             </div>
           </div>
@@ -213,7 +213,7 @@ export default {
       }).catch(err => {
         this.$swal({
           icon: 'error',
-          title: `${err.data.message}`
+          title: err.data.message
         })
         this.isLoading = false
       })
@@ -229,7 +229,7 @@ export default {
       }).catch(err => {
         this.$swal({
           icon: 'error',
-          title: `${err.data.message}`
+          title: err.data.message
         })
         this.isLoading = false
       })
@@ -247,7 +247,7 @@ export default {
       }).catch(err => {
         this.$swal({
           icon: 'error',
-          title: `${err.data.message}`
+          title: err.data.message
         })
         this.isLoading = false
       })
@@ -264,7 +264,7 @@ export default {
         }).catch(err => {
           this.$swal({
             icon: 'error',
-            title: `${err.data.message}`
+            title: err.data.message
           })
           this.isLoading = false
         })

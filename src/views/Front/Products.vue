@@ -71,7 +71,10 @@
 import Pagination from '@/components/Pagination.vue'
 const storageMethods = {
   getLikeItem () {
-    return JSON.parse(localStorage.getItem('MyFavorite'))
+    return JSON.parse(localStorage.getItem('MyFavorite')) || []
+  },
+  setItem (key, data) {
+    return localStorage.setItem(key, JSON.stringify(data))
   }
 }
 export default {
@@ -113,7 +116,7 @@ export default {
       }).catch(err => {
         this.$swal({
           icon: 'error',
-          title: `${err.data.message}`
+          title: err.data.message
         })
         this.isLoading = false
       })
@@ -137,7 +140,7 @@ export default {
       }).catch(err => {
         this.$swal({
           icon: 'error',
-          title: `${err.data.message}`
+          title: err.data.message
         })
         this.isLoading = false
       })
@@ -164,14 +167,12 @@ export default {
             this.myFavorite.splice(index, 1)
           }
         })
-        const favoriteString = JSON.stringify(this.myFavorite)
-        localStorage.setItem('MyFavorite', favoriteString)
+        storageMethods.setItem('MyFavorite', this.myFavorite)
         this.$swal({ icon: 'warning', title: '已從最愛中移除' })
       } else {
         this.myFavorite.push(data)
-        const dataString = JSON.stringify(this.myFavorite)
-        localStorage.setItem('MyFavorite', dataString)
-        this.myFavorite = JSON.parse(localStorage.getItem('MyFavorite'))
+        storageMethods.setItem('MyFavorite', this.myFavorite)
+        this.myFavorite = storageMethods.getLikeItem()
         this.$swal({ icon: 'success', title: '儲存成功！' })
       }
       this.emitter.emit('favorite-qty')
@@ -197,7 +198,7 @@ export default {
       }).catch(err => {
         this.$swal({
           icon: 'error',
-          title: `${err.data.message}`
+          title: err.data.message
         })
         this.isLoading = false
       })
@@ -209,7 +210,7 @@ export default {
       }).catch(err => {
         this.$swal({
           icon: 'error',
-          title: `${err.data.message}`
+          title: err.data.message
         })
         this.isLoading = false
       })
@@ -229,7 +230,7 @@ export default {
       }).catch(err => {
         this.$swal({
           icon: 'error',
-          title: `${err.data.message}`
+          title: err.data.message
         })
         this.isLoading = false
       })

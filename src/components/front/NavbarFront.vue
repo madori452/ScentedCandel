@@ -1,6 +1,6 @@
 <template>
   <div class="coupon position-fixed w-100">輸入 CDR5542 可以享受優惠85折喔！！</div>
-  <nav class="navbar navbar-expand-md navbar-bg py-0 mb-3 position-fixed w-100">
+  <nav class="navbar navbar-front navbar-expand-md navbar-bg py-0 mb-3 position-fixed w-100">
     <div class="container">
       <router-link to="../../user/index" class="mt-2" @click="closeNav">
         <img src="@/assets/img/Nav/logo-bk.svg" alt="logo" class="logo">
@@ -66,13 +66,13 @@ export default {
       }).catch(err => {
         this.$swal({
           icon: 'error',
-          title: `${err.data.message}`
+          title: err.data.message
         })
       })
     },
     scroll () {
       window.addEventListener('scroll', function () {
-        const navbar = this.document.querySelector('.navbar')
+        const navbar = this.document.querySelector('.navbar-front')
         const scorllPercent = this.scrollY
         if (scorllPercent > 10) {
           navbar.classList.add('navbar-bgscroll')
@@ -89,7 +89,6 @@ export default {
     getFavorite () {
       this.myFavorite = JSON.parse(localStorage.getItem('MyFavorite')) || []
     },
-
     closeNav () {
       if (window.innerWidth < 992) {
         this.toggleNav = false

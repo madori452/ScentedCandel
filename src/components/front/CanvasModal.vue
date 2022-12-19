@@ -31,7 +31,10 @@
 import Offcanvas from 'bootstrap/js/dist/offcanvas'
 const storageMethods = {
   getLikeItem () {
-    return JSON.parse(localStorage.getItem('MyFavorite'))
+    return JSON.parse(localStorage.getItem('MyFavorite')) || []
+  },
+  setItem (key, data) {
+    return localStorage.setItem(key, JSON.stringify(data))
   }
 }
 export default {
@@ -40,8 +43,8 @@ export default {
     return {
       bsOffcanvas: '',
       myFavorite: storageMethods.getLikeItem() || [],
-      allProducts: [], // 所有產品
-      filters: [], // (渲染用)篩選後的最愛清單資料,
+      allProducts: [],
+      filters: [],
       favoriteList: []
     }
   },
@@ -50,11 +53,11 @@ export default {
     // 打開畫布時取得的資料
     showCanvas () {
       this.bsOffcanvas.show()
-      this.favoriteList = JSON.parse(localStorage.getItem('MyFavorite'))
+      this.favoriteList = storageMethods.getLikeItem()
     },
     // 取的喜愛項目
     getFavorite () {
-      this.favoriteList = JSON.parse(localStorage.getItem('MyFavorite'))
+      this.favoriteList = storageMethods.getLikeItem()
     },
     // 移除喜愛項目
     removeItem (data) {
@@ -62,8 +65,7 @@ export default {
       this.favoriteList.forEach((element, index) => {
         if (element.id === data.id) {
           this.favoriteList.splice(index, 1)
-          const favoriteString = JSON.stringify(this.favoriteList)
-          localStorage.setItem('MyFavorite', favoriteString)
+          storageMethods.setItem('MyFavorite', this.favoriteList)
           this.emitter.emit('favorite-qty', this.myFavorite)
           this.emitter.emit('remove-data', this.myFavorite)
           this.$swal({ icon: 'warning', title: '已從最愛中移除' })
@@ -80,9 +82,6 @@ export default {
 </script>
 
 <style lang="scss">
-*{
-  // border: 1px solid #ddd;
-}
     .offcanvas-backdrop{
         background-color: #0000006b;
     }
