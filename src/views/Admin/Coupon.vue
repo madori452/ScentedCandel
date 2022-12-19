@@ -86,7 +86,7 @@ export default {
       }).catch(err => {
         this.$swal({
           icon: 'error',
-          title: `${err.data.message}`
+          title: err.data.message
         })
         this.isLoading = false
       })
@@ -101,7 +101,7 @@ export default {
         }).catch(err => {
           this.$swal({
             icon: 'error',
-            title: `${err.data.message}`
+            title: err.data.message
           })
           this.isLoading = false
         })
@@ -114,7 +114,7 @@ export default {
         }).catch(err => {
           this.$swal({
             icon: 'error',
-            title: `${err.data.message}`
+            title: err.data.message
           })
           this.isLoading = false
         })
@@ -132,7 +132,7 @@ export default {
       }).catch(err => {
         this.$swal({
           icon: 'error',
-          title: `${err.data.message}`
+          title: err.data.message
         })
         this.isLoading = false
       })
