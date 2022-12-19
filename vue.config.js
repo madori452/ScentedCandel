@@ -1,5 +1,6 @@
 module.exports = {
-  publicPath: '/Vue_shop/dist/',
+  publicPath: process.env.NODE_ENV === 'production' ? '/ScentedCandel/' : '/',
+
   css: {
     loaderOptions: {
       sass: {
