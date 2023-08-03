@@ -225,153 +225,153 @@
 
 <script>
 const storageMethods = {
-  getLikeItem() {
-    return JSON.parse(localStorage.getItem("MyFavorite")) || [];
+  getLikeItem () {
+    return JSON.parse(localStorage.getItem('MyFavorite')) || []
   },
-  setItem(key, data) {
-    return localStorage.setItem(key, JSON.stringify(data));
-  },
-};
+  setItem (key, data) {
+    return localStorage.setItem(key, JSON.stringify(data))
+  }
+}
 export default {
-  data() {
+  data () {
     return {
       product: {},
       allProducts: {},
       randomProducts: [],
       arrSet: [],
-      id: "",
-      imgUrl: "",
+      id: '',
+      imgUrl: '',
       productCount: 1,
-      produtContent: "",
+      produtContent: '',
       status: {
-        loadingItem: "", // 對應品項id
+        loadingItem: '' // 對應品項id
       },
-      myFavorite: storageMethods.getLikeItem() || [],
-    };
+      myFavorite: storageMethods.getLikeItem() || []
+    }
   },
-  inject: ["emitter"],
+  inject: ['emitter'],
   methods: {
-    getProducts() {
-      const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/products/all`;
-      this.isLoading = true;
+    getProducts () {
+      const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/products/all`
+      this.isLoading = true
       this.$http
         .get(url)
         .then((res) => {
           if (res.data.success) {
-            this.isLoading = false;
-            this.allProducts = res.data.products;
-            this.recommend();
+            this.isLoading = false
+            this.allProducts = res.data.products
+            this.recommend()
           }
         })
         .catch((err) => {
           this.$swal({
-            icon: "error",
-            title: err.data.message,
-          });
-          this.isLoading = false;
-        });
+            icon: 'error',
+            title: err.data.message
+          })
+          this.isLoading = false
+        })
     },
     // 取得收藏
-    getFavorite() {
-      this.myFavorite = storageMethods.getLikeItem() || [];
+    getFavorite () {
+      this.myFavorite = storageMethods.getLikeItem() || []
     },
     // 加入收藏
-    addFavorite(data) {
-      this.myFavorite = storageMethods.getLikeItem() || [];
+    addFavorite (data) {
+      this.myFavorite = storageMethods.getLikeItem() || []
       if (JSON.stringify(this.myFavorite).includes(data.id)) {
         this.myFavorite.forEach((item, index) => {
           if (item.id === data.id) {
-            this.myFavorite.splice(index, 1);
+            this.myFavorite.splice(index, 1)
           }
-        });
-        storageMethods.setItem("MyFavorite", this.myFavorite);
-        this.$swal({ icon: "warning", title: "已從最愛中移除" });
+        })
+        storageMethods.setItem('MyFavorite', this.myFavorite)
+        this.$swal({ icon: 'warning', title: '已從最愛中移除' })
       } else {
-        this.myFavorite.push(data);
-        storageMethods.setItem("MyFavorite", this.myFavorite);
-        this.myFavorite = storageMethods.getLikeItem();
-        this.$swal({ icon: "success", title: "儲存成功！" });
+        this.myFavorite.push(data)
+        storageMethods.setItem('MyFavorite', this.myFavorite)
+        this.myFavorite = storageMethods.getLikeItem()
+        this.$swal({ icon: 'success', title: '儲存成功！' })
       }
-      this.emitter.emit("favorite-qty");
+      this.emitter.emit('favorite-qty')
     },
-    recommend() {
-      const arrSet = new Set([]);
-      const productAll = this.allProducts;
+    recommend () {
+      const arrSet = new Set([])
+      const productAll = this.allProducts
       for (let i = 0; i <= 3; i++) {
         this.randomProducts =
-          productAll[Math.floor(Math.random() * productAll.length)];
-        arrSet.add(this.randomProducts);
+          productAll[Math.floor(Math.random() * productAll.length)]
+        arrSet.add(this.randomProducts)
       }
-      this.allProducts = arrSet;
+      this.allProducts = arrSet
     },
-    toProduct(id) {
-      this.$router.push(`${id}`);
-      this.getProduct(id);
+    toProduct (id) {
+      this.$router.push(`${id}`)
+      this.getProduct(id)
     },
     // 取得單一資料
-    getProduct(id) {
-      const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/product/${id}`;
-      this.isLoading = true;
+    getProduct (id) {
+      const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/product/${id}`
+      this.isLoading = true
       this.$http
         .get(url)
         .then((res) => {
-          this.product = res.data.product;
-          this.imgUrl = res.data.product.imageUrl;
-          this.isLoading = false;
-          this.produtContent = res.data.product.description;
+          this.product = res.data.product
+          this.imgUrl = res.data.product.imageUrl
+          this.isLoading = false
+          this.produtContent = res.data.product.description
         })
         .catch((err) => {
           this.$swal({
-            icon: "error",
-            title: err.data.message,
-          });
-          this.isLoading = false;
-        });
+            icon: 'error',
+            title: err.data.message
+          })
+          this.isLoading = false
+        })
     },
-    addCart(id) {
-      const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart`;
+    addCart (id) {
+      const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart`
       const cart = {
         product_id: id,
-        qty: 1,
-      };
-      this.status.loadingItem = id;
-      cart.qty = this.productCount;
+        qty: 1
+      }
+      this.status.loadingItem = id
+      cart.qty = this.productCount
       this.$http
         .post(url, { data: cart })
         .then((res) => {
-          this.status.loadingItem = "";
-          this.emitter.emit("update-qty");
-          this.$httpMessageState(res, "已加入購物車");
+          this.status.loadingItem = ''
+          this.emitter.emit('update-qty')
+          this.$httpMessageState(res, '已加入購物車')
         })
         .catch((err) => {
           this.$swal({
-            icon: "error",
-            title: err.data.message,
-          });
-          this.isLoading = false;
-        });
+            icon: 'error',
+            title: err.data.message
+          })
+          this.isLoading = false
+        })
     },
-    addNum() {
-      this.productCount += 1;
+    addNum () {
+      this.productCount += 1
     },
-    reduceNum() {
+    reduceNum () {
       if (this.productCount >= 1) {
-        this.productCount -= 1;
+        this.productCount -= 1
       }
-    },
+    }
   },
 
-  created() {
-    this.id = this.$route.params.productId;
-    this.getProduct(this.id);
-    this.getProducts();
-    this.getFavorite();
-    this.emitter.emit("favorite-qty", this.myFavorite);
-    this.emitter.on("remove-data", () => {
-      this.getFavorite();
-    });
-  },
-};
+  created () {
+    this.id = this.$route.params.productId
+    this.getProduct(this.id)
+    this.getProducts()
+    this.getFavorite()
+    this.emitter.emit('favorite-qty', this.myFavorite)
+    this.emitter.on('remove-data', () => {
+      this.getFavorite()
+    })
+  }
+}
 </script>
 
 <style scoped lang="scss">
